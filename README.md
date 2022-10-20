@@ -1,0 +1,29 @@
+## 博客服务端
+### 依赖包
+- mongoose mongodb文档CURD
+- jsonwebtoken 生成token
+- bcrypt 密码加密
+- inflection 转字符串为规格化类名
+- multer form-data文件上传
+- uuid 上传文件随机命名避免覆盖
+- jsonwebtoken 生成token
+- express-jwt express解析token、拦截请求
+- http-assert 断言响应错误
+- cors 跨域访问
+
+### 目录文件
+- config 服务器配置项
+- middleware express使用的中间件
+- utils 开发中用到的工具函数
+- routes 后端路由
+- controllers 路由请求处理函数（暂存）
+- models 数据库文档对象CURD
+- public 服务器静态资源
+
+### 困惑
+- 文章表中tags和tagID字段
+- 标签表中aid
+
+### 进度
+1. 2022-10-20 后台api接口开发与测试
+2. 
