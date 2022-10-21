@@ -10,6 +10,7 @@
 - express-jwt express解析token、拦截请求
 - http-assert 断言响应错误
 - cors 跨域访问
+- connect-history-api-fallback 支持前端history模式
 
 ### 目录文件
 - config 服务器配置项
@@ -26,4 +27,4 @@
 
 ### 进度
 1. 2022-10-20 后台api接口开发与测试
-2. 
+2. 2022-10-21 配置history模式，更新部分接口

@@ -14,13 +14,17 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 连接数据库
 require('./config/db');
 
+// 配置history模式支持
+const history = require('connect-history-api-fallback');
+app.use(history({ logger: console.log.bind(console) }));
+
 // 配置cors
 require('./middleware/cors')(app);
 
 // 路由拦截并解析token
 const { noFilter } = require('./utils/auth');
 // 只放行管理端登录接口
-app.use(noFilter(['/admin/login']));
+app.use(noFilter(['/admin/api/login']));
 
 // 加载路由
 require('./routes/admin')(app);

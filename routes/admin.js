@@ -76,7 +76,7 @@ module.exports = (app) => {
   const { setToken } = require('../utils/auth');
   const { User } = require('../models/models');
   // 管理员登录
-  app.post('/admin/login', async (req, res) => {
+  app.post('/admin/api/login', async (req, res) => {
     try {
       const { username, password } = req.body;
       // 检验用户是否存在
@@ -91,9 +91,9 @@ module.exports = (app) => {
       assert(user.isAdmin, 403, '无访问权限');
 
       const token = setToken({ id: user._id });
-      res.send({ status: true, token: token }); // 前端传输token时需加前缀 Bearer 
+      res.send({ status: true, token: token, data: { ...user._doc } }); // 前端传输token时需加前缀 Bearer 
     } catch (error) {
-      res.send({ status: error.status, message: error.message });
+      res.send({ status: false, message: error.message });
     }
   });
 }
