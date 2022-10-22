@@ -1,4 +1,5 @@
 // 响应状态码处理中间件
+// TODO 有待优化
 module.exports = (app) => {
   return (err, req, res, next) => {
     if (err.status === 401) {

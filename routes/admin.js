@@ -38,11 +38,18 @@ module.exports = (app) => {
   // 资源列表
   router.get('/', async (req, res) => {
     try {
+      // 当前页 每页大小
+      const { page, pageSize } = req.query;
       // 查询配置
-      const queryOption = {};
-      // 返回100条查询结果
-      const models = await req.Model.find().setOptions(queryOption).limit(100);
-      res.send(models);
+      const queryOption = {
+        skip: (page - 1) * pageSize,
+        limit: pageSize
+      };
+      // 返回数据总长度
+      const count = await req.Model.count();
+      // 返回分页查询结果
+      const models = await req.Model.find().setOptions(queryOption);
+      res.send({ data: models, count });
     } catch (error) {
       console.log(error.message);
     }
