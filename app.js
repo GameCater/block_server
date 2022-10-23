@@ -8,15 +8,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+// 配置history模式支持
+const history = require('connect-history-api-fallback');
+app.use(history({ logger: console.log.bind(console) }));
+
 // 静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 连接数据库
 require('./config/db');
-
-// 配置history模式支持
-const history = require('connect-history-api-fallback');
-app.use(history({ logger: console.log.bind(console) }));
 
 // 配置cors
 require('./middleware/cors')(app);

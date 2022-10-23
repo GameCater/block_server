@@ -8,7 +8,6 @@ module.exports = (app) => {
   router.post('/', async (req, res) => {
     try {
       const model = await req.Model.create(req.body);
-      console.log(model);
       res.send(model);
     } catch (error) {
       console.log(error.message);
