@@ -3,7 +3,7 @@ const { expressjwt } = require('express-jwt');
 
 // 配置token
 const SECRET_KEY = 'ALO_BLOG';
-const EXPIRE_IN = '1h';
+const EXPIRE_IN = '1d';
 const ALGORITHM = 'HS256';
 
 // 生成token

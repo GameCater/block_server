@@ -33,7 +33,7 @@ const articleSchema = new Schema({
   cover: String,
   // markdown内容
   body: String,
-  // html ?
+  // html markdown内容html表示
   content: String,
   // 标签
   tags: Array,
