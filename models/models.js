@@ -36,15 +36,15 @@ const articleSchema = new Schema({
   // html markdown内容html表示
   content: String,
   // 标签
-  tags: Array,
-  // 标签id
-  tagsID: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
+  // tags: Array,
+  // 标签
+  tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
   // 更新日期
   date: String,
   // 点击量
-  click: Number,
+  click: { type: Number, default: 0 },
   // 评论数量
-  comment: Number,
+  comment: { type: Number, default: 0 },
   // 作者id
   author: { type: Schema.Types.ObjectId, ref: 'User' },
 });

@@ -1,0 +1,33 @@
+module.exports = (app) => {
+  const express = require('express');
+  const router = express.Router();
+  const { Article, Tag } = require('../models/models');
+
+  // 文章列表
+  router.get('/article/list', async (req, res) => {
+    try {
+      const pageSize = Number(req.query.pageSize) || 10,
+            page = Number(req.query.page) || 1,
+            start = (page - 1) * pageSize;
+      const documents = await Article.find().skip(start).limit(pageSize).populate({ path: 'tags' });
+      const total = await Article.find().countDocuments();
+      const maxPage = Math.ceil(total / pageSize);
+      res.json({ data: documents, total, maxPage });
+    } catch (error) {
+      console.log(error.message);
+    }
+  })
+
+  // 标签列表
+  router.get('/tag/list', async (req, res) => {
+    try {
+      const documents = await Tag.find().populate('aid');
+      res.json({ data: documents });
+    } catch (error) {
+      console.log(error);
+    }
+  })
+
+
+  app.use('/web/api', router);
+}

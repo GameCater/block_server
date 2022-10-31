@@ -9,8 +9,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // 配置history模式支持
-const history = require('connect-history-api-fallback');
-app.use(history({ logger: console.log.bind(console) }));
+// const history = require('connect-history-api-fallback');
+// app.use(history({ logger: console.log.bind(console) }));
 
 // 静态文件目录
 app.use(express.static(path.join(__dirname, 'public')));
@@ -24,10 +24,17 @@ require('./middleware/cors')(app);
 // 路由拦截并解析token
 const { noFilter } = require('./utils/auth');
 // 只放行管理端登录接口
-app.use(noFilter(['/admin/api/login']));
+app.use(noFilter(
+  [
+    '/admin/api/login', 
+    { url: '/web/api/article/list', methods: 'GET' },
+    // { url: '/web/api/tag/list', methods: 'GET' },
+  ]
+));
 
 // 加载路由
 require('./routes/admin')(app);
+require('./routes/web')(app);
 
 // 状态码处理中间件
 const error = require('./middleware/error');
