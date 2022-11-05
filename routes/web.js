@@ -18,6 +18,40 @@ module.exports = (app) => {
     }
   })
 
+  // 搜索文章
+  router.get('/article/search', async (req, res) => {
+    try {
+      let { keyword, value, page, pageSize } = req.query;
+      page = Number(page) || 1;
+      pageSize = Number(pageSize) || 5;
+      const re = new RegExp(value, 'i');
+      const start = (page - 1) * pageSize;
+  
+      let filterOption = {};
+      switch (keyword) {
+        case 'title':
+          filterOption = { title: re };
+          break;
+        case 'date':
+          const nextDay = value + 'T24:00:00'; // 日期不是时间戳
+          filterOption = { date: { $gte: value, $lt: nextDay } };
+          break;
+      }
+      const documents = await Article.find(filterOption).sort({ date: -1 }).skip(start).limit(pageSize).populate({ path: 'tags' });
+      const total = await Article.find(filterOption).countDocuments();
+      const maxPage = Math.ceil(total / pageSize);
+      res.send({ data: documents, maxPage, total });
+    } catch (error) {
+      console.log(error.message);
+    }
+  })
+
+  // 文章详情
+  router.get('/article/:id', async (req, res) => {
+    const data = await Article.findById(req.params.id).populate({ path: 'tags' });
+    res.json({ data });
+  })
+
   // 标签列表
   router.get('/tag/list', async (req, res) => {
     try {

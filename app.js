@@ -23,12 +23,14 @@ require('./middleware/cors')(app);
 
 // 路由拦截并解析token
 const { noFilter } = require('./utils/auth');
-// 只放行管理端登录接口
+// 放行管理端登录接口和前台所有接口
 app.use(noFilter(
   [
     '/admin/api/login', 
+    { url: '/web/api/tag/list', methods: 'GET' },
     { url: '/web/api/article/list', methods: 'GET' },
-    // { url: '/web/api/tag/list', methods: 'GET' },
+    { url: '/web/api/article/search', methods: 'GET' },
+    { url: /^\/web\/api\/article\/.*/, methods: 'GET' },
   ]
 ));
 
