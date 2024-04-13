@@ -1,5 +1,3 @@
-const { User } = require("../models/models");
-
 module.exports = ((app) => {
   const mongoose = require("mongoose");
   const host = '127.0.0.1';
