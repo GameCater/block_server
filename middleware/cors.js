@@ -1,14 +1,16 @@
 // 允许访问的白名单
-const whitelist = ['http://localhost:8080', 'http://localhost:8090'];
+const whitelist = ['http://localhost'];
 // 配置
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  }
+  // origin: function (origin, callback) {
+  //   console.log(origin);
+  //   if (whitelist.indexOf(origin) !== -1 || !origin) {
+  //     callback(null, true);
+  //   } else {
+  //     callback(new Error('Not allowed by CORS'));
+  //   }
+  // }
+  origin: '*'
 }
 
 module.exports = (app) => {

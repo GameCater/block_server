@@ -31,6 +31,8 @@ app.use(noFilter(
     { url: '/web/api/article/list', methods: 'GET' },
     { url: '/web/api/article/search', methods: 'GET' },
     { url: /^\/web\/api\/article\/.*/, methods: 'GET' },
+    { url: /^\/web\/api\/comment\/.*/, methods: 'GET' },
+    { url: '/web/api/comment/create', methods: 'POST' },
   ]
 ));
 

@@ -1,7 +1,7 @@
 module.exports = (app) => {
   const express = require('express');
   const router = express.Router();
-  const { Article, Tag } = require('../models/models');
+  const { Article, Tag, Comment } = require('../models/models');
 
   // 文章列表
   router.get('/article/list', async (req, res) => {
@@ -62,6 +62,24 @@ module.exports = (app) => {
     }
   })
 
+  // 新增评论
+  router.post('/comment/create', async (req, res) => {
+    try {
+      const model = await Comment.create(req.body);
+      res.send(model);
+    } catch (error) {
+      console.log(error);
+    }
+  })
 
+  // 评论列表
+  router.get('/comment/list/:id', async (req, res) => {
+    try {
+      const documents = await Comment.find({ aid: req.params.id }).sort({ date: -1 }).populate('uid');
+      res.json({ data: documents });
+    } catch (error) {
+      console.log(error);
+    }
+  })
   app.use('/web/api', router);
 }
