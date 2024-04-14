@@ -13,10 +13,10 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(history({ logger: console.log.bind(console) }));
 
 // 静态文件目录
-app.use(express.static(path.join(__dirname, 'public')));
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // 连接数据库
-require('./config/db');
+require('./database/db');
 
 // 配置cors
 require('./middleware/cors')(app);
@@ -37,8 +37,8 @@ app.use(noFilter(
 ));
 
 // 加载路由
-require('./routes/admin')(app);
-require('./routes/web')(app);
+// require('./routes/admin')(app);
+// require('./routes/web')(app);
 
 // 状态码处理中间件
 const error = require('./middleware/error');

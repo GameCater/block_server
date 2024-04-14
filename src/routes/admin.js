@@ -3,6 +3,11 @@ module.exports = (app) => {
   const express = require('express');
   // 实例化admin 路由器
   const router = express.Router();
+
+  router.use(async (req, res, next) => {
+    console.log(Date.now().toString(), req.baseUrl);
+    next();
+  });
   
   // 创建资源
   router.post('/', async (req, res) => {
