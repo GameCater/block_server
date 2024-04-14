@@ -1,1 +1,14 @@
-{"Permission":{"isInited":true},"UserGroup":{"isInited":true},"User":{"isInited":true}}
+{
+    "Permission": {
+        "isInited": true
+    },
+    "UserGroup": {
+        "isInited": true
+    },
+    "User": {
+        "isInited": true
+    },
+    "GroupPermission": {
+        "isInited": true
+    }
+}

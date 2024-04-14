@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const { SchemaUtils } = require("../utils");
+const { SchemaDecorator } = require("../schemaDecorator");
 const { ESchemaName } = require("../names");
-const ModelMgr = require("../modelMgr"); 
+const { ModelMgr } = require("../modelMgr");
 
 const UserSchema = new mongoose.Schema({
     username: {
@@ -18,10 +18,6 @@ const UserSchema = new mongoose.Schema({
             return require('bcrypt').hashSync(val, 10)
         }
     },
-    userGroup: {
-        type: Array,
-        default: [],
-    },
     email: {
         type: String,
     },
@@ -37,12 +33,12 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-SchemaUtils.setDefaultData(UserSchema, {
+SchemaDecorator.getInstance().setDefaultData(UserSchema, {
     username: "root",
     password: "123456",
 });
 
 const User = mongoose.model(ESchemaName.User, UserSchema);
-ModelMgr.getInstance().add(User);
+ModelMgr.getInstance().add({ cls: User });
 
 module.exports.User = User;

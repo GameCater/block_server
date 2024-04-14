@@ -1,5 +1,6 @@
 const fs = require("fs");
 const { Handler } = require("../../utils/function");
+const BaseEventEmitter = require("./baseEventEmitter");
 
 class ModelMgr {
     static instance = null;
@@ -8,6 +9,8 @@ class ModelMgr {
         this._models = {};
         this._initedCount = 0;
         this._needInitCount = 0;
+
+        this.emitter = new BaseEventEmitter();
     }
 
     static getInstance() {
@@ -17,12 +20,18 @@ class ModelMgr {
         return ModelMgr.instance;
     }
 
-    add(modelCls) {
-        this._models[modelCls.modelName] = {
+    getModel(modelName) {
+        return this._models[modelName]?.cls;
+    }
+
+    add(modelInfo) {
+        let cls = modelInfo.cls;
+        this._models[cls.modelName] = {
             isInited: false,
             deleted: false,
-            cls: modelCls,
-        }
+            cls,
+            priority: modelInfo.priority || 0,
+        };
     }
 
     init() {
@@ -41,6 +50,7 @@ class ModelMgr {
                             isInited: flags[key].isInited,
                             deleted: true,
                             cls: null,
+                            priority: 0,
                         }
                         this._models[key] = modelInfo;
                     }
@@ -50,15 +60,40 @@ class ModelMgr {
         });
     }
 
-    _initModels() {
-        for (let modelClsName in this._models) {
-            let model = this._models[modelClsName];
+    async _initModels() {
+        this._preInit();
+
+        let sorted = this._getSortedModels();
+        for (let i = 0; i < sorted.length; i ++) {
+            let model = sorted[i];
             if (!model.isInited && !model.deleted) {
                 let modelCls = model.cls;
-                modelCls.firstSetup().apply(modelCls, [new Handler(this._onModelInitedSuccess, this, model)]);
+                let haveSetUpFunc = modelCls.firstSetup;
+                if (haveSetUpFunc) {
+                    let cbHandler = new Handler(this._onModelInitedSuccess, this, model);
+                    modelCls.firstSetup().apply(modelCls, [cbHandler]);
+                } else {
+                    this._onModelInitedSuccess(model);
+                }
             }
         }
+    }
 
+    _preInit() {
+        this._totalModelPrepareToInit();
+    }
+
+    _getSortedModels() {
+        let models = [];
+        for (let modelClsName in this._models) {
+            let model = this._models[modelClsName];
+            models.push(model);
+        }
+        models.sort((a, b) => a.priority - b.priority);
+        return models;
+    }
+
+    _totalModelPrepareToInit() {
         let count = 0;
         for (let modelClsName in this._models) {
             let model = this._models[modelClsName];
@@ -78,6 +113,7 @@ class ModelMgr {
     _checkIsComplete() {
         if (this._initedCount == this._needInitCount) {
             this._updateLocalRecords();
+            this.emitter.emit(ModelMgrEvents.AllModelInited);
         }
     }
 
@@ -97,4 +133,9 @@ class ModelMgr {
     }
 }
 
-module.exports = ModelMgr;
+class ModelMgrEvents {
+    static AllModelInited = "ModelMgrEvents_AllModelInited";
+}
+
+module.exports.ModelMgr = ModelMgr;
+module.exports.ModelMgrEvents = ModelMgrEvents;

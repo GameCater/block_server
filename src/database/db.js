@@ -14,9 +14,9 @@ module.exports = ((app) => {
     const Permission = require("../models/schemas/userSystem/permission");
     const UserGroup = require("../models/schemas/userSystem/userGroup");
     const User = require("../models/schemas/userSystem/user");
+    const GroupPermission = require("../models/schemas/userSystem/groupPermission");
     
-    const ModelMgr = require("../models/schemas/modelMgr");
-    let mgr = ModelMgr.getInstance();
-    mgr.init();
+    const { ModelMgr } = require("../models/schemas/modelMgr");
+    ModelMgr.getInstance().init();
   })
 })();
