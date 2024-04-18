@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
-const { ESchemaName } = require("../names");
-const { ModelMgr } = require("../modelMgr");
-const { SchemaDecorator } = require("../schemaDecorator");
+const { ESchemaName } = require("../../names");
+const { ModelMgr } = require("../../modelMgr");
+const { SchemaDecorator } = require("../../schemaDecorator");
 
 const GroupPermissionSchema = new mongoose.Schema({
     groupId: {

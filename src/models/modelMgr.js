@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Handler } = require("../../utils/function");
+const { Handler } = require("../utils/function");
 const BaseEventEmitter = require("./baseEventEmitter");
 
 class ModelMgr {
