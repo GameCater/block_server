@@ -6,5 +6,9 @@ module.exports.config = {
         port: 27017,
         name: 'blog',
         schemasUrl: path.join(__dirname, '/src/models/schemas'),
+    },
+    app: {
+        port: 3000,
+        env: process.env.NODE_ENV || 'development',
     }
 }

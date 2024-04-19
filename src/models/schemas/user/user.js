@@ -28,9 +28,6 @@ const UserSchema = new mongoose.Schema({
     avatar: {
         type: String,
     },
-    registTime: {
-        type: Date,
-    }
 });
 
 SchemaDecorator.getInstance().setDefaultData(UserSchema, {

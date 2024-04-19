@@ -1,6 +1,6 @@
 class ESchemaName {
     static User = "User";
-    static UserGroup = "UserGroup";
+    static Group = "Group";
     static Permission = "Permission";
     static GroupPermission = "GroupPermission";
 }

@@ -6,7 +6,7 @@ const { SchemaDecorator } = require("../../schemaDecorator");
 const GroupPermissionSchema = new mongoose.Schema({
     groupId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: ESchemaName.UserGroup,
+        ref: ESchemaName.Group,
         required: true,
     },
     permissionId: {
@@ -17,7 +17,7 @@ const GroupPermissionSchema = new mongoose.Schema({
 });
 
 SchemaDecorator.getInstance().setDefaultData(GroupPermissionSchema, {
-    "groupId": ESchemaName.UserGroup + "_name_admin", 
+    "groupId": ESchemaName.Group + "_name_admin", 
     "permissionId": ESchemaName.Permission + "_name_edit",
     "isCustom": true,
 });

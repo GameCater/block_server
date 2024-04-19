@@ -3,7 +3,7 @@ const { SchemaDecorator } = require("../../schemaDecorator");
 const { ESchemaName } = require("../../names");
 const { ModelMgr } = require("../../modelMgr");
 
-const UserGroupSchema = new mongoose.Schema({
+const GroupSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -16,12 +16,12 @@ const UserGroupSchema = new mongoose.Schema({
     },
 });
 
-SchemaDecorator.getInstance().setDefaultData(UserGroupSchema, [
+SchemaDecorator.getInstance().setDefaultData(GroupSchema, [
     { name: "user", description: "user"},
     { name: "admin", description: "admin"}
 ]);
 
-const UserGroup = mongoose.model(ESchemaName.UserGroup, UserGroupSchema);
-ModelMgr.getInstance().add({ cls: UserGroup });
+const Group = mongoose.model(ESchemaName.Group, GroupSchema);
+ModelMgr.getInstance().add({ cls: Group });
 
-module.exports.UserGroup = UserGroup;
+module.exports.Group = Group;
