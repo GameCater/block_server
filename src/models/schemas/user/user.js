@@ -3,6 +3,7 @@ const { SchemaDecorator } = require("../../schemaDecorator");
 const { ESchemaName } = require("../../names");
 const { ModelMgr } = require("../../modelMgr");
 
+/** 用户 */
 const UserSchema = new mongoose.Schema({
     username: {
         type: String,

@@ -3,6 +3,7 @@ const { SchemaDecorator } = require("../../schemaDecorator");
 const { ESchemaName } = require("../../names");
 const { ModelMgr } = require("../../modelMgr");
 
+/** 权限 */
 const PermissionSchema = new mongoose.Schema({
     name: {
         type: String,

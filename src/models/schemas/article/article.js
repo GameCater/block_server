@@ -15,12 +15,6 @@ const ArticleSchema = new mongoose.Schema({
     
 });
 
-SchemaDecorator.getInstance().setDefaultData(UserSchema, {
-    username: "root",
-    password: "123456",
-});
-
-const User = mongoose.model(ESchemaName.User, UserSchema);
-ModelMgr.getInstance().add({ cls: User });
-
-module.exports.User = User;
+const Article = mongoose.model(ESchemaName.Article, ArticleSchema);
+ModelMgr.getInstance().add({ cls: Article });
+module.exports.User = Article;

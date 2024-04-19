@@ -34,10 +34,10 @@ class ModelMgr {
         };
     }
 
-    init() {
-        fs.readFile("./modelInitializeFlag.json", "utf8", (err, data) => {
+    async init() {
+        fs.readFile("./modelInitializeFlag.json", "utf8", async (err, data) => {
             if (err) {
-                console.log("modelInitializeFlag.json read failed!");
+                await this._clearModels();
                 this._initModels();
             } else {
                 let flags = JSON.parse(data);
@@ -58,6 +58,14 @@ class ModelMgr {
                 this._initModels();
             }
         });
+    }
+
+    async _clearModels() {
+        for (let modelClsName in this._models) {
+            let model = this._models[modelClsName];
+            let modelDBClass = model.cls;
+            await modelDBClass.deleteMany({});
+        }
     }
 
     async _initModels() {

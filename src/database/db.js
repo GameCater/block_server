@@ -7,14 +7,24 @@ module.exports = ((app) => {
     const host = config.database.host;
     const port = config.database.port;
     const database = config.database.name;
-    mongoose.connect(`mongodb://${host}:${port}/${database}`, {
+    const connection = mongoose.connect(`mongodb://${host}:${port}/${database}`, {
         useNewUrlParser: true,
         useUnifiedTopology: true
-    }, (err) => {
-        if (err) throw err;
+    }).then(db => {
         console.log(`database: ${database} connected`);
 
+        _initModelManager();
+    });
+
+    function _initModelManager() {
         let schemaRootPath = config.database.schemasUrl;
+        _importAllSchemaFiles(schemaRootPath);
+        
+        const { ModelMgr } = require("../models/modelMgr");
+        ModelMgr.getInstance().init();
+    }
+
+    function _importAllSchemaFiles(schemaRootPath) {
         fs.readdirSync(schemaRootPath).forEach(p => {
             let schemaSubDirPath = path.join(schemaRootPath, p);
             fs.readdirSync(schemaSubDirPath).forEach(s => {
@@ -22,8 +32,5 @@ module.exports = ((app) => {
                 require(schemaPath);
             });
         });
-
-        const { ModelMgr } = require("../models/modelMgr");
-        ModelMgr.getInstance().init();
-    })
+    }
 })();

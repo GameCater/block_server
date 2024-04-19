@@ -3,6 +3,7 @@ const { ESchemaName } = require("../../names");
 const { ModelMgr } = require("../../modelMgr");
 const { SchemaDecorator } = require("../../schemaDecorator");
 
+/** 组&权限 关系 */
 const GroupPermissionSchema = new mongoose.Schema({
     groupId: {
         type: mongoose.Schema.Types.ObjectId,

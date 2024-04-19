@@ -3,6 +3,7 @@ const { SchemaDecorator } = require("../../schemaDecorator");
 const { ESchemaName } = require("../../names");
 const { ModelMgr } = require("../../modelMgr");
 
+/** 组 */
 const GroupSchema = new mongoose.Schema({
     name: {
         type: String,

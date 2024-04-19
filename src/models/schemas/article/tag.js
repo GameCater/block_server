@@ -8,7 +8,6 @@ const TagSchema = new mongoose.Schema({
     date: String,
 });
 
-const User = mongoose.model(ESchemaName.User, UserSchema);
-ModelMgr.getInstance().add({ cls: User });
-
-module.exports.User = User;
+const Tag = mongoose.model(ESchemaName.Tag, TagSchema);
+ModelMgr.getInstance().add({ cls: Tag });
+module.exports.User = Tag;

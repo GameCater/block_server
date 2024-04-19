@@ -61,8 +61,12 @@ class SchemaDecorator {
                     let callerType = data._callerType;
                     delete data._callerType;
                     callerType.create(data);
+                }).catch(err => {
+                    console.log(err);
                 });
             });
+        }).catch(err => {
+            console.log(err);
         })
     }
     
