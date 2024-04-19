@@ -1,17 +1,1 @@
-{
-    "Group": {
-        "isInited": true
-    },
-    "GroupPermission": {
-        "isInited": true
-    },
-    "Permission": {
-        "isInited": true
-    },
-    "User": {
-        "isInited": true
-    },
-    "UserGroup": {
-        "isInited": true
-    }
-}
+{"Tag":{"isInited":true},"Group":{"isInited":true},"GroupPermission":{"isInited":true},"Permission":{"isInited":true},"User":{"isInited":true},"UserGroup":{"isInited":true}}

@@ -3,9 +3,16 @@ const { SchemaDecorator } = require("../../schemaDecorator");
 const { ESchemaName } = require("../../names");
 const { ModelMgr } = require("../../modelMgr");
 
+/** 标签 */
 const TagSchema = new mongoose.Schema({
-    name: String,
-    date: String,
+    name: {
+        type: String,
+        required: true,
+    },
+});
+
+SchemaDecorator.getInstance().setDefaultData(TagSchema, {
+    name: "默认标签",
 });
 
 const Tag = mongoose.model(ESchemaName.Tag, TagSchema);
