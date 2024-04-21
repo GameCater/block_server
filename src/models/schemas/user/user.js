@@ -38,5 +38,4 @@ SchemaDecorator.getInstance().setDefaultData(UserSchema, {
 
 const User = mongoose.model(ESchemaName.User, UserSchema);
 ModelMgr.getInstance().add({ cls: User });
-
 module.exports.User = User;

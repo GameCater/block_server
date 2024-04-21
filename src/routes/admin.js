@@ -1,91 +1,40 @@
-// REST风格
+const commonController = require('../controllers/common/common');
+
 module.exports = (app) => {
   const express = require('express');
   // 实例化admin 路由器
   const router = express.Router();
 
-  router.use(async (req, res, next) => {
-    console.log(Date.now().toString(), req.baseUrl);
-    next();
-  });
-  
   // 创建资源
-  router.post('/', async (req, res) => {
-    try {
-      const model = await req.Model.create(req.body);
-      res.send(model);
-    } catch (error) {
-      console.log(error.message);
-    }
-  });
-
-  // 修改资源
-  router.put('/:id', async (req, res) => {
-    try {
-      const model = await req.Model.findByIdAndUpdate(req.params.id, req.body);
-      res.send(model);
-    } catch (error) {
-      console.log(error.message);
-    }
-  });
-
+  router.post('/', commonController.add);
   // 删除资源
-  router.delete('/:id', async (req, res) => {
-    try {
-      await req.Model.findByIdAndRemove(req.params.id);
-      res.send({ status: true });
-    } catch (error) {
-      console.log(error.message);
-    }
-  });
-
+  router.delete('/:id', commonController.delete);
+  // 修改资源
+  router.put('/:id', commonController.update);
   // 资源列表
-  router.get('/', async (req, res) => {
-    try {
-      // 当前页 每页大小
-      const { page, pageSize } = req.query;
-      // 查询配置
-      const queryOption = {
-        skip: (page - 1) * pageSize,
-        limit: pageSize
-      };
-      // 返回数据总长度
-      const count = await req.Model.count();
-      // 返回分页查询结果
-      const models = await req.Model.find().setOptions(queryOption);
-      res.send({ data: models, count });
-    } catch (error) {
-      console.log(error.message);
-    }
-  });
-
+  router.get('/', commonController.find);
   // 资源详情
-  router.get('/:id', async (req, res) => {
-    try {
-      const model = await req.Model.findById(req.params.id);
-      res.send(model);
-    } catch (error) {
-      console.log(error.message);
-    }
-  });
+  router.get('/:id', commonController.find);
   
   // resource中间件，绑定req.Model
   const resource = require('../middleware/resource');
   app.use('/admin/api/rest/:resource', resource(), router);
 
   // multer 中间件
-  const upload = require('../middleware/upload');
-  // 上传文件
-  app.post('/admin/api/upload', upload.single('file'), async (req, res) => {
-    const file = req.file;
-    // 文件在服务器中的地址
-    file.url = `http://localhost:3000/public/uploads/${file.filename}`;
-    res.send(file);
-  });
+  // const upload = require('../middleware/upload');
+  // // 上传文件
+  // app.post('/admin/api/upload', upload.single('file'), async (req, res) => {
+  //   const file = req.file;
+  //   // 文件在服务器中的地址
+  //   file.url = `http://localhost:3000/public/uploads/${file.filename}`;
+  //   res.send(file);
+  // });
 
   const assert = require('http-assert');
   const { setToken } = require('../utils/auth');
-  const { User } = require('../models/models');
+  const { User } = require('../models/schemas/user/user');
+  const { UserGroup } = require('../models/schemas/user/userGroup');
+  const { Group } = require('../models/schemas/user/group'); 
   // 管理员登录
   app.post('/admin/api/login', async (req, res) => {
     try {
@@ -99,7 +48,10 @@ module.exports = (app) => {
       assert(isValid, 422, '密码不正确');
 
       // 检验访问者的权限
-      assert(user.isAdmin, 403, '无访问权限');
+      // assert(user.isAdmin, 403, '无访问权限');
+      const userGroup = await UserGroup.findOne({ userId: user._id });
+      const group = await Group.findById(userGroup.groupId);
+      assert(group.name === "admin", 403, '无访问权限');
 
       const token = setToken({ id: user._id });
       res.send({ status: true, token: token, data: { ...user._doc } }); // 前端传输token时需加前缀 Bearer 
