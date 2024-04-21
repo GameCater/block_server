@@ -7,6 +7,7 @@ class ESchemaName {
 
     static Article = "Article";
     static Tag = "Tag";
+    static Comment = "Comment";
 }
 
 module.exports.ESchemaName = ESchemaName;

@@ -5,5 +5,9 @@ module.exports = {
         'user/permission.js',
         'user/user.js',
         'user/userGroup.js',
+
+        'article/article.js',
+        'article/comment.js',
+        'article/tag.js',
     ]
 }
