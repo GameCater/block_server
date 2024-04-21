@@ -36,6 +36,8 @@ app.use(noFilter(
   ]
 ));
 
+require('./middleware/log')(app);
+
 // 加载路由
 require("./routes")(app);
 
