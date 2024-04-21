@@ -4,10 +4,6 @@ const path = require('path');
 // express应用实例
 const app = express();
 
-// req.body
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
 // 配置history模式支持
 // const history = require('connect-history-api-fallback');
 // app.use(history({ logger: console.log.bind(console) }));
@@ -36,9 +32,10 @@ app.use(noFilter(
   ]
 ));
 
-require('./middleware/log')(app);
+// 全局中间件模块
+require('./middleware')(app);
 
-// 加载路由
+// 路由模块
 require("./routes")(app);
 
 // 状态码处理中间件
