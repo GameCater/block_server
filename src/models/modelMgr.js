@@ -1,6 +1,7 @@
 const fs = require("fs");
 const { Handler } = require("../utils/function");
 const BaseEventEmitter = require("./baseEventEmitter");
+const { config } = require("../config/config");
 
 class ModelMgr {
     static instance = null;
@@ -35,7 +36,7 @@ class ModelMgr {
     }
 
     async init() {
-        fs.readFile("./modelInitializeFlag.json", "utf8", async (err, data) => {
+        fs.readFile(config.database.schemasStateRecordJson, "utf8", async (err, data) => {
             if (err) {
                 await this._clearModels();
                 this._initModels();
@@ -135,8 +136,8 @@ class ModelMgr {
             dataToStore[modelClsName] = data;
         }
         let record = JSON.stringify(dataToStore);
-        fs.writeFile("./modelInitializeFlag.json", record, (err) => {
-            if (err) console.log("modelInitializeFlag.json write failed!");
+        fs.writeFile(config.database.schemasStateRecordJson, record, (err) => {
+            if (err) console.log(config.database.schemasStateRecordJson + "write failed!");
         });
     }
 }

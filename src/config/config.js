@@ -6,6 +6,8 @@ module.exports.config = {
         port: 27017,
         name: 'blog',
         schemasUrl: path.join(__dirname, '../models/schemas'),
+        schemasInitConfig: "config.js",
+        schemasStateRecordJson: path.join(__dirname, '../models/schemas/state.json'),
     },
     app: {
         port: 3000,

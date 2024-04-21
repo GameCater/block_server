@@ -18,19 +18,34 @@ module.exports = ((app) => {
 
     function _initModelManager() {
         let schemaRootPath = config.database.schemasUrl;
-        _importAllSchemaFiles(schemaRootPath);
+        let schemaInitConfig = config.database.schemasInitConfig;
+        _importRequiredSchemaFiles(schemaRootPath, schemaInitConfig);
         
         const { ModelMgr } = require("../models/modelMgr");
         ModelMgr.getInstance().init();
     }
 
-    function _importAllSchemaFiles(schemaRootPath) {
-        fs.readdirSync(schemaRootPath).forEach(p => {
-            let schemaSubDirPath = path.join(schemaRootPath, p);
-            fs.readdirSync(schemaSubDirPath).forEach(s => {
-                let schemaPath = path.join(schemaSubDirPath, s);
+    function _importRequiredSchemaFiles(schemaRootPath, schemaInitConfig) {
+
+        let fileNames = [];
+        fs.readdirSync(schemaRootPath).forEach(fileName => {
+            fileNames.push(fileName);    
+        });
+
+        let schemasNeedInit = [];
+        if (fileNames.indexOf(schemaInitConfig)) {
+            let configPath = path.join(schemaRootPath, schemaInitConfig);
+            if (fs.existsSync(configPath)) {
+                let config = require(configPath);
+                schemasNeedInit = config.import;
+            }
+        }
+
+        if (schemasNeedInit.length > 0) {
+            schemasNeedInit.forEach(schemaName => {
+                let schemaPath = path.join(schemaRootPath, schemaName);
                 require(schemaPath);
             });
-        });
+        }
     }
 })();
