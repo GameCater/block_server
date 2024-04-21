@@ -37,8 +37,7 @@ app.use(noFilter(
 ));
 
 // 加载路由
-require('./routes/admin')(app);
-// require('./routes/web')(app);
+require("./routes")(app);
 
 // 状态码处理中间件
 const error = require('./middleware/error');

@@ -11,7 +11,7 @@ module.exports = {
                 let skip = (page - 1) * pageSize;
                 let limit = pageSize;
                 let data = await model.find().skip(skip).limit(limit);
-                res.send(data);
+                res.send({ data, count: data.length });
             } else if (id) {
                 let data = await model.findById(id);
                 res.send(data);
