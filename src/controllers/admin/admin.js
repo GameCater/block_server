@@ -2,7 +2,7 @@ const { ModelMgr } = require('../../models/modelMgr');
 const { ESchemaName } = require('../../models/names');
 
 module.exports = {
-    login: async (req, res) => {
+    login: async (req, res, next) => {
         const User = ModelMgr.getInstance().getModel(ESchemaName.User);
         const UserGroup = ModelMgr.getInstance().getModel(ESchemaName.UserGroup);
         const Group = ModelMgr.getInstance().getModel(ESchemaName.Group);

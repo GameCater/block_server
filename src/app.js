@@ -6,9 +6,6 @@ const app = express();
 // const history = require('connect-history-api-fallback');
 // app.use(history({ logger: console.log.bind(console) }));
 
-// 静态文件目录
-// app.use(express.static(path.join(__dirname, 'public')));
-
 // 数据库
 require('./database')(app);
 // 中间件
