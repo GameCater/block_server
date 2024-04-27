@@ -7,7 +7,7 @@ module.exports = {
         const UserGroup = ModelMgr.getInstance().getModel(ESchemaName.UserGroup);
         const Group = ModelMgr.getInstance().getModel(ESchemaName.Group);
 
-        const { setToken } = require("../../utils/auth");
+        const { setToken } = require("../../middleware/auth/auth");
         const assert = require("http-assert");
 
         try {

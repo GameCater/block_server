@@ -11,25 +11,8 @@ const app = express();
 // 静态文件目录
 // app.use(express.static(path.join(__dirname, 'public')));
 
-// 连接数据库
-require('./database/db');
-
-
-
-// 路由拦截并解析token
-const { noFilter } = require('./utils/auth');
-// 放行管理端登录接口和前台所有接口
-app.use(noFilter(
-  [
-    '/admin/api/login', 
-    { url: '/web/api/tag/list', methods: 'GET' },
-    { url: '/web/api/article/list', methods: 'GET' },
-    { url: '/web/api/article/search', methods: 'GET' },
-    { url: /^\/web\/api\/article\/.*/, methods: 'GET' },
-    { url: /^\/web\/api\/comment\/.*/, methods: 'GET' },
-    { url: '/web/api/comment/create', methods: 'POST' },
-  ]
-));
+// 数据库
+require('./database');
 
 // 全局中间件模块
 require('./middleware')(app);
