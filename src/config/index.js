@@ -18,6 +18,9 @@ const config = {
     log: {
         minimunLevel: "debug",
         storePath: path.join(__dirname, '../../logs'),
+    },
+    static: {
+        path: path.join(__dirname, '../../public'),
     }
 }
 

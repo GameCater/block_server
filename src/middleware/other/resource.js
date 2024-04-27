@@ -1,4 +1,4 @@
-const { ModelMgr } = require("../models/modelMgr");
+const { ModelMgr } = require("../../models/modelMgr");
 
 // req.Model 中间件函数
 module.exports = (option) => {

@@ -7,7 +7,10 @@ module.exports = (app) => {
     require("./auth")(app);
 
     const express = require('express');
-    app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
+    app.use(express.json());
 
+    // 静态文件目录
+    const config = require("../config");
+    app.use(express.static(config.static.path));
 }

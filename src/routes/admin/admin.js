@@ -17,7 +17,7 @@ module.exports = (app) => {
   router.get('/:id', commonController.find);
   
   // resource中间件，绑定req.Model
-  const resource = require('../../middleware/resource');
+  const resource = require('../../middleware/other/resource');
   app.use('/admin/api/rest/:resource', resource(), router);
 
   // multer 中间件

@@ -1,6 +1,4 @@
 const express = require('express');
-const path = require('path');
-
 // express应用实例
 const app = express();
 
@@ -12,20 +10,16 @@ const app = express();
 // app.use(express.static(path.join(__dirname, 'public')));
 
 // 数据库
-require('./database');
-
-// 全局中间件模块
+require('./database')(app);
+// 中间件
 require('./middleware')(app);
-
-// 路由模块
+// 路由
 require("./routes")(app);
 
-// 状态码处理中间件
-const error = require('./middleware/error');
-app.use(error());
-
-// 服务器监听3000端口
-app.listen(3000, (err) => {
-  if (err) throw err;
-  console.log('http://localhost:3000');
+const config = require('./config');
+app.listen(config.server.port, (err) => {
+    if (err) {
+        throw err;
+    }
+    console.log(`server is running at http://localhost:${config.server.port}`);
 });
