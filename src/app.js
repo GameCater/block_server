@@ -14,8 +14,7 @@ const app = express();
 // 连接数据库
 require('./database/db');
 
-// 配置cors
-require('./middleware/cors')(app);
+
 
 // 路由拦截并解析token
 const { noFilter } = require('./utils/auth');

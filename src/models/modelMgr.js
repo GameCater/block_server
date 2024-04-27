@@ -1,5 +1,5 @@
 const fs = require("fs");
-const { Handler } = require("../utils/function");
+const { Handler } = require("../utils/handler");
 const BaseEventEmitter = require("./baseEventEmitter");
 const config = require("../config");
 
