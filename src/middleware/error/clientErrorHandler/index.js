@@ -16,8 +16,8 @@ module.exports = (app) => {
             response.code = err.status;
             response.message = err.message;
         }
-        else {
-            next(err);
+        else if (err instanceof Error) {
+            response.message = err.message;
         }
         res.status(response.code).send(response);
     }

@@ -1,4 +1,5 @@
 const { noFilter } = require("./auth")
+const config = require("../../config")
 module.exports = (app) => {
 
     let whitelist = [
@@ -11,5 +12,7 @@ module.exports = (app) => {
         { url: '/web/api/comment/create', methods: 'POST' },
     ]
 
-    app.use(noFilter(whitelist));
+    // 放行方便调试
+    if (config.server.env !== "development")
+        app.use(noFilter(whitelist));
 }
