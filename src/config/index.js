@@ -1,6 +1,6 @@
 const path = require("path");
 
-module.exports.config = {
+const config = {
     database: {
         host: "127.0.0.1",
         port: 27017,
@@ -9,7 +9,7 @@ module.exports.config = {
         schemasInitConfig: "config.js",
         schemasStateRecordJson: path.join(__dirname, '../models/schemas/state.json'),
     },
-    app: {
+    server: {
         host: "127.0.0.1",
         port: 3000,
         env: process.env.NODE_ENV || "development",
@@ -20,3 +20,14 @@ module.exports.config = {
         storePath: path.join(__dirname, '../../logs'),
     }
 }
+
+module.exports = (() => {
+    let env = config.server.env;
+    let complete = {};
+    if (env === "development") {
+        complete = Object.assign(complete, config, require("./development"));
+    } else if (env === "production") {
+        complete = Object.assign(complete, config, require("./production"));
+    }
+    return complete;
+})();

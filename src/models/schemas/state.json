@@ -1,1 +1,26 @@
-{"User":{"isInited":true},"GroupPermission":{"isInited":true},"Group":{"isInited":true},"Permission":{"isInited":true},"UserGroup":{"isInited":true},"Article":{"isInited":true},"Comment":{"isInited":true},"Tag":{"isInited":true}}
+{
+    "User": {
+        "isInited": true
+    },
+    "GroupPermission": {
+        "isInited": true
+    },
+    "Group": {
+        "isInited": true
+    },
+    "Permission": {
+        "isInited": true
+    },
+    "UserGroup": {
+        "isInited": true
+    },
+    "Article": {
+        "isInited": true
+    },
+    "Comment": {
+        "isInited": true
+    },
+    "Tag": {
+        "isInited": true
+    }
+}

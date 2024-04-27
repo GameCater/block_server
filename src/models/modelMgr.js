@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { Handler } = require("../utils/function");
 const BaseEventEmitter = require("./baseEventEmitter");
-const { config } = require("../config/config");
+const config = require("../config");
 
 class ModelMgr {
     static instance = null;

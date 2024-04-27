@@ -1,8 +1,11 @@
 module.exports = ((app) => {
-    let { config } = require("../config/config");
+    let config = require("../config");
+
     const mongoose = require("mongoose");
     const fs = require("fs");
     const path = require("path");
+
+    mongoose.set("strictQuery", false);
 
     const host = config.database.host;
     const port = config.database.port;

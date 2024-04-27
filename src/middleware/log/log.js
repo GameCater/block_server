@@ -1,6 +1,6 @@
 module.exports = () => {
     const log4js = require("log4js");
-    const { config } = require("../../config/config");
+    const config = require("../../config");
 
     let logConfig = {
         appenders: {
