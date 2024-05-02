@@ -1,3 +1,4 @@
+/** 服务器自定义错误，不向客户端提供详细信息 */
 class CustomError extends Error {
     constructor(code, message) {
         super(code, { message: message || 'unknown error' });
@@ -14,6 +15,7 @@ class CustomError extends Error {
     }
 }
 
+/** HTTP错误，向客户端提供较为详细的信息 */
 class HttpError extends CustomError {
     constructor(code, message) {
         super(code, message);
@@ -27,7 +29,9 @@ const StatusMsg = {
     403: 'forbidden',
     404: 'not found',
     500: 'internal server error',
+    1201: 'custom error',
 
+    'custom error': 1201,
     'success': 200,
     'bad request': 400,
     'unauthorized': 401,

@@ -17,7 +17,7 @@
 - middleware express使用的中间件
 - utils 开发中用到的工具函数
 - routes 后端路由
-- controllers 路由请求处理函数（暂存）
+- controllers 路由请求处理函数
 - models 数据库文档对象CURD
 - public 服务器静态资源
 

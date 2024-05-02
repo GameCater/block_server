@@ -7,7 +7,7 @@ module.exports = (app) => {
             code: 500,
             message: 'unkown error',
         }
-        if (err instanceof HttpError || err instanceof CustomError) {
+        if (err instanceof HttpError) {
             let errorInfo = err.getCodeMsg();
             response.code = errorInfo.code;
             response.message = errorInfo.msg;
@@ -19,7 +19,7 @@ module.exports = (app) => {
         else if (err instanceof Error) {
             response.message = err.message;
         }
-        res.status(response.code).send(response);
+        res.json(response);
     }
 
     app.use(clientErrorHandler);
