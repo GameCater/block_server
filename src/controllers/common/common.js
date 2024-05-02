@@ -1,3 +1,5 @@
+const { wrap } = require("../../utils/response");
+
 module.exports = {
     find: async (req, res, next) => {
         let model = req.Model;
@@ -8,19 +10,21 @@ module.exports = {
                 res.send(data);
             } 
             else {
+                let response;
                 let { page, pageSize, id } = req.query;
                 if (page && pageSize) {
                     let skip = (page - 1) * pageSize;
                     let limit = pageSize;
                     let data = await model.find().skip(skip).limit(limit);
-                    res.send({ data, count: data.length });
+                    response = wrap(200, undefined, { data });
                 } else if (id) {
                     let data = await model.findById(id);
-                    res.send(data);
+                    response = wrap(200, undefined, { data });
                 } else {
                     let data = await model.find();            
-                    res.send(data);
+                    response = wrap(200, undefined, { data });
                 }
+                res.send(response);
             }
         } catch (error) {
             next(error);

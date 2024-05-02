@@ -3,6 +3,7 @@ const { SchemaDecorator } = require("../../schemaDecorator");
 const { ESchemaName } = require("../../names");
 const { ModelMgr } = require("../../modelMgr");
 const { CustomError, HttpError } = require("../../../middleware/error/utils/error");
+const { wrap } = require("../../../utils/response");
 
 /** 用户 */
 const UserSchema = new mongoose.Schema({
@@ -61,13 +62,8 @@ UserSchema.statics.st_add = async function (data) {
         finally {
             session.endSession();
         }
-        return {
-            code: 200,
-            data: {
-                user: newUser,
-                group: defaultGroup
-            }
-        }
+        // TODO 返回值
+        return wrap(200, undefined, { });
     }
     else {
         throw new HttpError(1201, "请输入完整的用户名和密码");
@@ -90,10 +86,8 @@ UserSchema.statics.st_delete = async function (data) {
         finally {
             session.endSession();
         }
-        return {
-            code: 200,
-            data: result
-        }
+        // TODO 返回值
+        return wrap(200, undefined, { });
     }
 }
 

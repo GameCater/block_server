@@ -1,6 +1,9 @@
-const { HttpError, CodeMsg } = require('../../middleware/error/utils/error');
+const config = require('../../config');
+const { HttpError } = require('../../middleware/error/utils/error');
 const { ModelMgr } = require('../../models/modelMgr');
 const { ESchemaName } = require('../../models/names');
+const { wrap } = require("../../utils/response");
+const { getFileType } = require("../../utils/fileUtil");
 
 module.exports = {
     login: async (req, res, next) => {
@@ -37,6 +40,22 @@ module.exports = {
                 }
             }
             res.send(response); // 前端传输token时需加前缀 Bearer 
+        }
+        catch (err) {
+            next(err);
+        }
+    },
+    upload: async(req, res, next) => {
+        try {
+            const files = req.files;
+            console.log(files);
+            files.forEach(file => {
+                const host = config.server.host,
+                      root = config.static.rootDir,
+                      subDir = getFileType(file.mimetype);
+                file.serverPath = `http://${host}/${root}/${subDir}`;
+            });
+            res.send(wrap(200, undefined, { data: files }));
         }
         catch (err) {
             next(err);

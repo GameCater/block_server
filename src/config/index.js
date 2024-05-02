@@ -20,6 +20,7 @@ const config = {
         storePath: path.join(__dirname, '../../logs'),
     },
     static: {
+        rootDir: "public",
         path: path.join(__dirname, '../../public'),
     }
 }
