@@ -5,13 +5,13 @@ module.exports = {
         let model = req.Model;
         try {
             if (model.st_find) {
-                let params = req.query;
-                let data = await model.st_find(params);
+                let data = await model.st_find(req);
                 res.send(data);
-            } 
+            }
             else {
                 let response;
-                let { page, pageSize, id } = req.query;
+                let { page, pageSize } = req.query;
+                let { id } = req.params;
                 if (page && pageSize) {
                     let skip = (page - 1) * pageSize;
                     let limit = pageSize;
@@ -21,7 +21,7 @@ module.exports = {
                     let data = await model.findById(id);
                     response = wrap(200, undefined, { data });
                 } else {
-                    let data = await model.find();            
+                    let data = await model.find();
                     response = wrap(200, undefined, { data });
                 }
                 res.send(response);
@@ -37,7 +37,7 @@ module.exports = {
                 let params = req.body;
                 let data = await model.st_update(params);
                 res.send(data);
-            } 
+            }
             else {
                 let id = req.params.id;
                 let content = req.body;
@@ -55,7 +55,7 @@ module.exports = {
                 let params = req.body;
                 let data = await model.st_add(params);
                 res.send(data);
-            } 
+            }
             else {
                 let data = await model.create(req.body);
                 res.send(data);
@@ -71,7 +71,7 @@ module.exports = {
                 let params = req.params;
                 let data = await model.st_delete(params);
                 res.send(data);
-            } 
+            }
             else {
                 let id = req.params.id;
                 let data = await model.findByIdAndRemove(id);

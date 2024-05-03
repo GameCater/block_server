@@ -20,6 +20,7 @@ module.exports = (req, res, next) => {
 
             if (canStore) {
                 let ws = fs.createWriteStream(file.filepath);
+                // TODO 写文件进度
                 ws.write(file.buffer, (err) => {
                     if (err) next(err);
                 });
