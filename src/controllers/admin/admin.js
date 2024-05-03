@@ -52,9 +52,8 @@ module.exports = {
             files.forEach((file, idx) => {
                 const host = config.server.host;
                 const port = config.server.port;
-                const root = config.static.rootDir;
                 const subDir = getFileType(file.mimetype);
-                file.serverPath = `http://${host}:${port}/${root}/${subDir}/${file.filename}`;
+                file.serverPath = `http://${host}:${port}/${subDir}/${file.filename}`;
                 file.ext = ext[idx];
             });
 
