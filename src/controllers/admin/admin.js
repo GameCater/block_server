@@ -1,3 +1,4 @@
+const path = require("path");
 const config = require('../../config');
 const { HttpError } = require('../../middleware/error/utils/error');
 const { ModelMgr } = require('../../models/modelMgr');
@@ -53,7 +54,8 @@ module.exports = {
                 const host = config.server.host;
                 const port = config.server.port;
                 const subDir = getFileType(file.mimetype);
-                file.serverPath = `http://${host}:${port}/${subDir}/${file.filename}`;
+                let reference = file.info.path.split(path.sep).pop();
+                file.serverPath = `http://${host}:${port}/${subDir}/${reference}`;
                 file.ext = ext[idx];
             });
 

@@ -1,5 +1,6 @@
 const admin = require('../../controllers/admin/admin');
 const commonController = require('../../controllers/common/common');
+const storeDisk = require('../../middleware/file/storeDisk');
 
 module.exports = (app) => {
     const express = require('express');
@@ -21,8 +22,8 @@ module.exports = (app) => {
     app.use('/admin/api/rest/:resource', resource(), router);
 
     // 上传文件
-    const upload = require('../../middleware/other/upload');
-    app.post('/admin/api/upload', upload.array('files'), admin.upload);
+    const upload = require('../../middleware/file/upload');
+    app.post('/admin/api/upload', [upload.array('files'), storeDisk], admin.upload);
 
     // 后台用户登录
     app.post('/admin/api/login', admin.login);
