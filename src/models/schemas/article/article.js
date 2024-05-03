@@ -51,20 +51,20 @@ ArticleSchema.statics.st_find = async function (req) {
     let articlesCount = await Article.countDocuments();
     let maxPage = null;
     if (id) {
-        documents = await Article.findById(id)
+        documents = await Article.findById(id).sort({ modifiedTime: -1 })
             .populate("tags")
             .populate("author")
             .populate("comments");
     }
     else if (page && pageSize) {
-        documents = await Article.find().skip((page - 1) * pageSize).limit(pageSize)
+        documents = await Article.find().skip((page - 1) * pageSize).limit(pageSize).sort({ modifiedTime: -1 })
             .populate("tags")
             .populate("author")
             .populate("comments");
         maxPage = Math.ceil(articlesCount / pageSize);
     }
     else {
-        documents = await Article.find()
+        documents = await Article.find().sort({ modifiedTime: -1 })
             .populate("tags")
             .populate("author")
             .populate("comments");
