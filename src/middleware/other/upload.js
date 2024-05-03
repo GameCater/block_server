@@ -16,6 +16,8 @@ const storage = multer.diskStorage({
     cb(null, filepath);
   },
   filename: function (req, file, cb) {
+    let originName = Buffer.from(file.originalname, "ascii").toString("utf-8");
+    file.originalname = originName;
     const filename = uuid().replaceAll('-', '') + path.extname(file.originalname);
     cb(null, filename);
   }
@@ -27,7 +29,7 @@ const option = {
     if (file && file.originalname.endsWith(".js")) {
       cb(null, false);
     }
-    else 
+    else
       cb(null, true);
   }
 }

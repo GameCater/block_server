@@ -23,14 +23,14 @@ module.exports = {
             // 检验访问者的权限
             const userGroup = await UserGroup.findOne({ userId: user._id });
             const group = await Group.findById(userGroup.groupId);
-            if (group && group.name !== "admin") 
+            if (group && group.name !== "admin")
                 throw new HttpError(1201, "无管理员权限！");
-            
+
             // 检验密码是否一致
             const isValid = require('bcrypt').compareSync(password, user.password);
             if (!isValid)
                 throw new HttpError(1201, "密码不对！");
-        
+
             const token = setToken({ id: user._id });
             const response = {
                 code: 200,
@@ -45,16 +45,19 @@ module.exports = {
             next(err);
         }
     },
-    upload: async(req, res, next) => {
+    upload: async (req, res, next) => {
         try {
             const files = req.files;
-            console.log(files);
-            files.forEach(file => {
-                const host = config.server.host,
-                      root = config.static.rootDir,
-                      subDir = getFileType(file.mimetype);
-                file.serverPath = `http://${host}/${root}/${subDir}`;
+            const ext = JSON.parse(req.body.ext);
+            files.forEach((file, idx) => {
+                const host = config.server.host;
+                const port = config.server.port;
+                const root = config.static.rootDir;
+                const subDir = getFileType(file.mimetype);
+                file.serverPath = `http://${host}:${port}/${root}/${subDir}/${file.filename}`;
+                file.ext = ext[idx];
             });
+
             res.send(wrap(200, undefined, { data: files }));
         }
         catch (err) {
