@@ -50,7 +50,7 @@ UserSchema.statics.st_add = async function (data) {
         let newUser, defaultGroup;
         try {
             await session.withTransaction(async () => {
-                newUser = await User.create([{ username, password }], { session });
+                newUser = await User.create([data], { session });
                 defaultGroup = await Group.find({ name: "user" }).session(session);
                 if (defaultGroup && defaultGroup.length) {
                     await UserGroup.create([{ userId: newUser[0]._id, groupId: defaultGroup[0]._id }], { session });
@@ -63,7 +63,7 @@ UserSchema.statics.st_add = async function (data) {
             session.endSession();
         }
         // TODO 返回值
-        return wrap(200, undefined, { });
+        return wrap(200, undefined, {});
     }
     else {
         throw new HttpError(1201, "请输入完整的用户名和密码");
@@ -76,7 +76,7 @@ UserSchema.statics.st_delete = async function (data) {
         const modelMgr = ModelMgr.getInstance();
         const User = modelMgr.getModel(ESchemaName.User);
         const UserGroup = modelMgr.getModel(ESchemaName.UserGroup);
-        
+
         const session = await mongoose.startSession();
         let result;
         try {
@@ -87,8 +87,40 @@ UserSchema.statics.st_delete = async function (data) {
             session.endSession();
         }
         // TODO 返回值
-        return wrap(200, undefined, { });
+        return wrap(200, undefined, {});
     }
+}
+
+UserSchema.statics.st_find = async function (req) {
+    const { page, pageSize } = req.query;
+    const { id } = req.params;
+    const User = ModelMgr.instance.getModel(ESchemaName.User);
+    const UserGroup = ModelMgr.instance.getModel(ESchemaName.UserGroup);
+
+    let groups;
+    let users;
+    let articlesCount = await User.countDocuments();
+    if (id) {
+        users = await User.find({ _id: id });
+    }
+    else if (page && pageSize) {
+        users = await User.find().skip((page - 1) * pageSize).limit(pageSize);
+    }
+    else {
+        users = await User.find()
+    }
+    groups = [];
+    for await (const doc of users) {
+        let result = await UserGroup.call_find({ userId: doc._id });
+        groups.push(result);
+    }
+    return wrap(200, undefined, {
+        data: {
+            users: users,
+            groups: groups
+        },
+        total: articlesCount
+    });
 }
 
 const User = mongoose.model(ESchemaName.User, UserSchema);
