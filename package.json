@@ -19,6 +19,7 @@
     "inflection": "^1.13.4",
     "jsonwebtoken": "^8.5.1",
     "log4js": "^6.9.1",
+    "markdown-it": "^14.1.0",
     "md5": "^2.3.0",
     "mongoose": "^6.6.5",
     "morgan": "~1.9.1",
