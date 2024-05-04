@@ -6,6 +6,47 @@ const { ESchemaName } = require('../../models/names');
 const { wrap } = require("../../utils/response");
 const { getFileType } = require("../../utils/fileUtil");
 
+async function handleUpload(req, res, next) {
+    let action = req.body.action;
+    switch (action) {
+        case "saveImageFromMarkdown":
+            saveImageFromMarkdown(req, res, next);
+        case "importMarkdown":
+            importMarkdown(req, res, next);
+    }
+}
+
+async function importMarkdown(req, res, next) {
+    // try {
+    //     const file = req.files[0];
+    //     let md = file.buffer.toString('utf8');
+    //     console.log(md);
+    //     res.send(wrap(200, undefined, { data: "123" }));
+    // }
+    // catch (err) {
+    //     next(err);
+    // }
+}
+
+async function saveImageFromMarkdown(req, res, next) {
+    try {
+        const ext = JSON.parse(req.body.ext);
+        const files = req.files;
+        files.forEach((file, idx) => {
+            const host = config.server.host;
+            const port = config.server.port;
+            const subDir = getFileType(file.mimetype);
+            let reference = file.info.path.split(path.sep).pop();
+            file.serverPath = `http://${host}:${port}/${subDir}/${reference}`;
+            file.ext = ext[idx];
+        });
+        res.send(wrap(200, undefined, { data: files }));
+    }
+    catch (err) {
+        next(err);
+    }
+}
+
 module.exports = {
     login: async (req, res, next) => {
         const User = ModelMgr.getInstance().getModel(ESchemaName.User);
@@ -47,22 +88,6 @@ module.exports = {
         }
     },
     upload: async (req, res, next) => {
-        try {
-            const files = req.files;
-            const ext = JSON.parse(req.body.ext);
-            files.forEach((file, idx) => {
-                const host = config.server.host;
-                const port = config.server.port;
-                const subDir = getFileType(file.mimetype);
-                let reference = file.info.path.split(path.sep).pop();
-                file.serverPath = `http://${host}:${port}/${subDir}/${reference}`;
-                file.ext = ext[idx];
-            });
-
-            res.send(wrap(200, undefined, { data: files }));
-        }
-        catch (err) {
-            next(err);
-        }
+        await handleUpload(req, res, next);
     }
 }

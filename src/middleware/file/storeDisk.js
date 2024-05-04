@@ -26,7 +26,6 @@ module.exports = (req, res, next) => {
                 });
                 ws.on('finish', () => {
                     req.Logger.info(`file ${file.filename} store success`);
-                    delete file.buffer;
                 });
                 ws.end();
             }
