@@ -10,6 +10,14 @@ const TagSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    desc: {
+        type: String,
+        default: "",
+    },
+    modifiedTime: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
 SchemaDecorator.getInstance().setDefaultData(TagSchema, {

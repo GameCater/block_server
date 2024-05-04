@@ -15,14 +15,16 @@ module.exports = {
                 if (page && pageSize) {
                     let skip = (page - 1) * pageSize;
                     let limit = pageSize;
+                    let total = await model.countDocuments();
                     let data = await model.find().skip(skip).limit(limit);
-                    response = wrap(200, undefined, { data });
+                    response = wrap(200, undefined, { data, total });
                 } else if (id) {
                     let data = await model.findById(id);
                     response = wrap(200, undefined, { data });
                 } else {
                     let data = await model.find();
-                    response = wrap(200, undefined, { data });
+                    let total = await model.countDocuments();
+                    response = wrap(200, undefined, { data, total });
                 }
                 res.send(response);
             }
@@ -42,7 +44,9 @@ module.exports = {
                 let id = req.params.id;
                 let content = req.body;
                 let data = await model.findByIdAndUpdate(id, content);
-                res.send(data);
+                if (data) {
+                    res.send(wrap(200, undefined, { data }));
+                }
             }
         } catch (error) {
             next(error);
@@ -58,7 +62,9 @@ module.exports = {
             }
             else {
                 let data = await model.create(req.body);
-                res.send(data);
+                if (data) {
+                    res.send(wrap(200, undefined, { data }));
+                }
             }
         } catch (error) {
             next(error);
@@ -75,7 +81,9 @@ module.exports = {
             else {
                 let id = req.params.id;
                 let data = await model.findByIdAndRemove(id);
-                res.send(data);
+                if (data) {
+                    res.send(wrap(200, undefined, { data }));
+                }
             }
         } catch (error) {
             next(error);

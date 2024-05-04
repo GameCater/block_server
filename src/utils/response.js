@@ -4,7 +4,7 @@ function wrap(code, message, data) {
     if (message) {
         wrapped.message = message;
     }
-    else if (data) {
+    if (data) {
         wrapped.payload = data;
     }
     return wrapped;

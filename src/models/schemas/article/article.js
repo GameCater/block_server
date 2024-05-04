@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { SchemaDecorator } = require("../../schemaDecorator");
 const { ESchemaName } = require("../../names");
 const { ModelMgr } = require("../../modelMgr");
+const { wrap } = require("../../../utils/response");
 
 const ArticleSchema = new mongoose.Schema({
     title: {
@@ -69,14 +70,11 @@ ArticleSchema.statics.st_find = async function (req) {
             .populate("author")
             .populate("comments");
     }
-    return {
-        code: 200,
-        payload: {
-            data: documents,
-            maxPage,
-            total: articlesCount
-        }
-    }
+    return wrap(200, undefined, {
+        data: documents,
+        maxPage,
+        total: articlesCount
+    });
 }
 
 const Article = mongoose.model(ESchemaName.Article, ArticleSchema);
