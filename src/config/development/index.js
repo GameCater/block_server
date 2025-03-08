@@ -1,6 +1,6 @@
 module.exports = {
     client: {
-        origin: ["http://localhost:8090"],
+        origin: ["http://localhost:8090", "http://localhost:8080"],
     },
     auth: {
         secretKey: "blog_server",

@@ -1,14 +1,19 @@
+const { ModelMgr } = require('../../models/modelMgr');
+const { ESchemaName } = require('../../models/names');
+
 module.exports = (app) => {
   const express = require('express');
   const router = express.Router();
-  const { Article, Tag, Comment } = require('../models/models');
+
 
   // 文章列表
   router.get('/article/list', async (req, res) => {
+    const Article = ModelMgr.getInstance().getModel(ESchemaName.Article);
+
     try {
       const pageSize = Number(req.query.pageSize) || 10,
-            page = Number(req.query.page) || 1,
-            start = (page - 1) * pageSize;
+        page = Number(req.query.page) || 1,
+        start = (page - 1) * pageSize;
       const documents = await Article.find().skip(start).limit(pageSize).populate({ path: 'tags' });
       const total = await Article.find().countDocuments();
       const maxPage = Math.ceil(total / pageSize);
@@ -20,13 +25,15 @@ module.exports = (app) => {
 
   // 搜索文章
   router.get('/article/search', async (req, res) => {
+    const Article = ModelMgr.getInstance().getModel(ESchemaName.Article);
+
     try {
       let { keyword, value, page, pageSize } = req.query;
       page = Number(page) || 1;
       pageSize = Number(pageSize) || 5;
       const re = new RegExp(value, 'i');
       const start = (page - 1) * pageSize;
-  
+
       let filterOption = {};
       switch (keyword) {
         case 'title':
@@ -48,12 +55,16 @@ module.exports = (app) => {
 
   // 文章详情
   router.get('/article/:id', async (req, res) => {
+    const Article = ModelMgr.getInstance().getModel(ESchemaName.Article);
+
     const data = await Article.findById(req.params.id).populate({ path: 'tags' });
     res.json({ data });
   })
 
   // 标签列表
   router.get('/tag/list', async (req, res) => {
+    const Tag = ModelMgr.getInstance().getModel(ESchemaName.Tag);
+
     try {
       const documents = await Tag.find().populate('aid');
       res.json({ data: documents });
@@ -64,6 +75,8 @@ module.exports = (app) => {
 
   // 新增评论
   router.post('/comment/create', async (req, res) => {
+    const Comment = ModelMgr.getInstance().getModel(ESchemaName.Comment);
+
     try {
       const model = await Comment.create(req.body);
       res.send(model);
@@ -74,6 +87,8 @@ module.exports = (app) => {
 
   // 评论列表
   router.get('/comment/list/:id', async (req, res) => {
+    const Comment = ModelMgr.getInstance().getModel(ESchemaName.Comment);
+
     try {
       const documents = await Comment.find({ aid: req.params.id }).sort({ date: -1 }).populate('uid');
       res.json({ data: documents });
